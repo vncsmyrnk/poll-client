@@ -1,0 +1,27 @@
+import axios from 'axios';
+import type { Poll, VotePayload } from '../types';
+
+const API_BASE_URL = 'http://localhost:8080/api';
+
+const apiClient = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+export const getPolls = async (query?: string): Promise<Poll[]> => {
+  const params = query ? { q: query } : {};
+  const response = await apiClient.get<Poll[]>('/polls', { params });
+  return response.data;
+};
+
+export const getPoll = async (id: string): Promise<Poll> => {
+  const response = await apiClient.get<Poll>(`/polls/${id}`);
+  return response.data;
+};
+
+export const votePoll = async (id: string, payload: VotePayload): Promise<void> => {
+  await apiClient.post(`/polls/${id}/votes`, { option_id: payload.optionId });
+};
+
