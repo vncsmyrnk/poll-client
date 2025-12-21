@@ -1,7 +1,7 @@
 import axios from 'axios';
 import type { Poll, VotePayload } from '../types';
 
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = window.env?.API_BASE_URL || 'https://poll-api.vncsmyrnk.dev/api';
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -24,4 +24,5 @@ export const getPoll = async (id: string): Promise<Poll> => {
 export const votePoll = async (id: string, payload: VotePayload): Promise<void> => {
   await apiClient.post(`/polls/${id}/votes`, { option_id: payload.optionId });
 };
+
 
