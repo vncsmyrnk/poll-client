@@ -10,6 +10,8 @@ This application is production-ready and containerized, making it suitable for b
 
 We offer a managed cloud environment for users who prefer a hosted solution. Visit [poll.vncsmyrnk.dev](https://poll.vncsmyrnk.dev) to get started with the managed API.
 
+The cloud environment levarages GCP and Cloud Run.
+
 ## 🛠️ Development
 
 To run this project locally, just run `pnpm dev`.
