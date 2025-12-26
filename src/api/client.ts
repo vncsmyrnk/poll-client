@@ -5,6 +5,7 @@ const API_BASE_URL = window.env?.API_BASE_URL || 'https://poll-api.vncsmyrnk.dev
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -24,5 +25,4 @@ export const getPoll = async (id: string): Promise<Poll> => {
 export const votePoll = async (id: string, payload: VotePayload): Promise<void> => {
   await apiClient.post(`/polls/${id}/votes`, { option_id: payload.optionId });
 };
-
 
