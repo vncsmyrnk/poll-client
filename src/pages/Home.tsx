@@ -44,18 +44,13 @@ export const Home = () => {
         </Col>
       </Row>
 
-      <Row xs={1} md={2} lg={3} className="g-4 justify-content-center">
+      <Row xs={1} md={2} lg={2} className="g-4 justify-content-center">
         {polls.map((poll) => (
           <Col key={poll.id}>
             <Card as={Link} to={`/polls/${poll.id}`} className="h-100 text-decoration-none text-dark" style={{ cursor: 'pointer' }}>
               <Card.Body>
                 <Card.Title>{poll.title}</Card.Title>
                 <Card.Text>{poll.description}</Card.Text>
-                <ul className="list-unstyled">
-                    {poll.options.map(opt => (
-                        <li key={opt.id} className="mb-1">• {opt.text}</li>
-                    ))}
-                </ul>
               </Card.Body>
             </Card>
           </Col>
