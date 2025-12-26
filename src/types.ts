@@ -17,6 +17,13 @@ export interface VotePayload {
   optionId: string;
 }
 
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  picture?: string;
+}
+
 declare global {
   interface Window {
     env: {
@@ -24,5 +31,3 @@ declare global {
     };
   }
 }
-
-
