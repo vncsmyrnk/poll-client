@@ -1,7 +1,7 @@
 import axios from 'axios';
 import type { Poll, VotePayload, User } from '../types';
 
-const API_BASE_URL = window.env?.API_BASE_URL || 'https://poll-api.vncsmyrnk.dev/api';
+const API_BASE_URL = window.env?.API_BASE_URL || 'https://poll-api.vncsmyrnk.dev';
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -12,7 +12,7 @@ const apiClient = axios.create({
 });
 
 export const getMe = async (): Promise<User> => {
-  const response = await apiClient.get<User>('/me');
+  const response = await apiClient.get<User>('/api/me');
   return response.data;
 };
 
@@ -22,17 +22,17 @@ export const logout = async (): Promise<void> => {
 
 export const getPolls = async (query?: string): Promise<Poll[]> => {
   const params = query ? { q: query } : {};
-  const response = await apiClient.get<Poll[]>('/polls', { params });
+  const response = await apiClient.get<Poll[]>('/api/polls', { params });
   return response.data;
 };
 
 export const getPoll = async (id: string): Promise<Poll> => {
-  const response = await apiClient.get<Poll>(`/polls/${id}`);
+  const response = await apiClient.get<Poll>(`/api/polls/${id}`);
   return response.data;
 };
 
 export const votePoll = async (id: string, payload: VotePayload): Promise<void> => {
-  await apiClient.post(`/polls/${id}/votes`, { option_id: payload.optionId });
+  await apiClient.post(`/api/polls/${id}/votes`, { option_id: payload.optionId });
 };
 
 
