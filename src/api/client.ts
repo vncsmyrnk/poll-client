@@ -16,6 +16,10 @@ export const getMe = async (): Promise<User> => {
   return response.data;
 };
 
+export const logout = async (): Promise<void> => {
+  await apiClient.post('/auth/logout');
+};
+
 export const getPolls = async (query?: string): Promise<Poll[]> => {
   const params = query ? { q: query } : {};
   const response = await apiClient.get<Poll[]>('/polls', { params });

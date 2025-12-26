@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { getMe } from '../api/client';
+import { getMe, logout } from '../api/client';
 import type { User } from '../types';
 
 export const AppBar = () => {
@@ -18,6 +18,17 @@ export const AppBar = () => {
     };
     fetchUser();
   }, []);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error('Logout failed', error);
+    } finally {
+      setUser(null);
+      window.location.href = '/';
+    }
+  };
 
   const userIcon = (
     <span className="d-flex align-items-center gap-2">
@@ -51,10 +62,7 @@ export const AppBar = () => {
                  <>
                    <NavDropdown.ItemText className="fw-bold">{user.name}</NavDropdown.ItemText>
                    <NavDropdown.Divider />
-                   <NavDropdown.Item onClick={() => {
-                     setUser(null);
-                     window.location.reload(); 
-                   }}>Logout</NavDropdown.Item>
+                   <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
                  </>
               ) : (
                 <NavDropdown.Item as={Link} to="/login">Login</NavDropdown.Item>
@@ -66,5 +74,3 @@ export const AppBar = () => {
     </Navbar>
   );
 };
-
-
