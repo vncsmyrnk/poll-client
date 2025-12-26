@@ -17,7 +17,7 @@ export const Login = () => {
   return (
     <Container className="d-flex align-items-center justify-content-center" style={{ minHeight: '100vh' }}>
       <Row className="w-100 justify-content-center">
-        <Col md={6} lg={4}>
+        <Col lg={6}>
           <Card className="shadow">
             <Card.Body className="text-center p-5">
               <h2 className="mb-4">Welcome Back</h2>
