@@ -17,6 +17,15 @@ export interface VotePayload {
   optionId: string;
 }
 
+export interface PollCount {
+  VoteCount: number;
+  Percentage: number;
+}
+
+export interface PollCounts {
+  [optionId: string]: PollCount;
+}
+
 export interface User {
   id: string;
   name: string;
