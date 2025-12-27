@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { Container, Row, Col, Card, Button, ListGroup } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, ListGroup, Modal } from 'react-bootstrap';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { getPoll, votePoll, getPollCounts, getMyVote } from '../api/client';
 import type { Poll, PollCounts } from '../types';
@@ -11,11 +11,14 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d'
 
 export const PollDetail = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [poll, setPoll] = useState<Poll | null>(null);
   const [pollCounts, setPollCounts] = useState<PollCounts | null>(null);
   const [userVoteOptionId, setUserVoteOptionId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [voting, setVoting] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const fetchPollData = async () => {
     if (!id) return;
@@ -35,7 +38,6 @@ export const PollDetail = () => {
     const votePromise = getMyVote(id)
       .then((myVote) => setUserVoteOptionId(myVote.option_id))
       .catch((error) => {
-        // If 404 or other error, assume no vote or handle silently
         setUserVoteOptionId(null);
         console.debug('Failed to fetch my vote', error);
       });
@@ -58,17 +60,28 @@ export const PollDetail = () => {
     setVoting(true);
     try {
       await votePoll(id, { optionId });
-      await fetchPollData(); // Refresh data to show new vote
+      await fetchPollData();
     } catch (error) {
       console.error('Failed to vote', error);
-      if (axios.isAxiosError(error) && error.response?.status === 409) {
-        alert('You have already voted on this poll.');
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 409) {
+          alert('You have already voted on this poll.');
+        } else if (error.response?.status === 401) {
+          setShowLoginModal(true);
+        } else {
+          alert('Failed to submit vote');
+        }
       } else {
         alert('Failed to submit vote');
       }
     } finally {
       setVoting(false);
     }
+  };
+
+  const handleLoginRedirect = () => {
+    localStorage.setItem('loginRedirect', location.pathname);
+    navigate('/login');
   };
 
   if (loading) return <Container className="my-5 text-center">Loading...</Container>;
@@ -157,6 +170,23 @@ export const PollDetail = () => {
           </Card>
         </Col>
       </Row>
+
+      <Modal show={showLoginModal} onHide={() => setShowLoginModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Login Required</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          You must be logged in to vote. Please log in to continue.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowLoginModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleLoginRedirect}>
+            Log In
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 };

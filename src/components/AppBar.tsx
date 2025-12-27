@@ -1,23 +1,30 @@
 import { useState, useEffect } from 'react';
 import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getMe, logout } from '../api/client';
 import type { User } from '../types';
 
 export const AppBar = () => {
   const [user, setUser] = useState<User | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const userData = await getMe();
         setUser(userData);
+
+        const redirectPath = localStorage.getItem('loginRedirect');
+        if (redirectPath) {
+          localStorage.removeItem('loginRedirect');
+          navigate(redirectPath);
+        }
       } catch (error) {
         console.debug('User not authenticated', error);
       }
     };
     fetchUser();
-  }, []);
+  }, [navigate]);
 
   const handleLogout = async () => {
     try {
