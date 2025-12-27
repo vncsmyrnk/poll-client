@@ -26,6 +26,10 @@ export interface PollCounts {
   [optionId: string]: PollCount;
 }
 
+export interface UserVote {
+  option_id: string;
+}
+
 export interface User {
   id: string;
   name: string;
