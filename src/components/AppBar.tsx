@@ -58,7 +58,7 @@ export const AppBar = () => {
   );
 
   return (
-    <Navbar sticky="top" bg="white">
+    <Navbar sticky="top" bg="body">
       <Container>
         <Navbar.Brand as={Link} to="/">Open polls</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

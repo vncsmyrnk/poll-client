@@ -52,10 +52,10 @@ export const Home = () => {
       <Row xs={1} md={2} lg={2} className="g-4 justify-content-center">
         {polls.map((poll) => (
           <Col key={poll.id}>
-            <Card as={Link} to={`/polls/${poll.id}`} className="h-100 text-decoration-none text-dark" style={{ cursor: 'pointer' }}>
+            <Card as={Link} to={`/polls/${poll.id}`} className="h-100 text-decoration-none text-reset" style={{ cursor: 'pointer' }}>
               <Card.Body>
-                <Card.Title>{poll.title}</Card.Title>
-                <Card.Text>{poll.description}</Card.Text>
+                <Card.Title className="fw-bold">{poll.title}</Card.Title>
+                <Card.Text className="text-muted">{poll.description}</Card.Text>
               </Card.Body>
             </Card>
           </Col>

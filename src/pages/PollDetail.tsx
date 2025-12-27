@@ -110,9 +110,9 @@ export const PollDetail = () => {
   return (
     <Container className="my-5">
       <div className="d-flex justify-content-start align-items-center mb-4 gap-2">
-        <Link to="/" className="btn btn-outline-secondary">&larr; Back to Polls</Link>
+        <Link to="/" className="btn">&larr; Back to Polls</Link>
         <Button
-          variant="secondary"
+          variant="dark"
           onClick={handleCopyLink}
           active={linkCopied}
         >
