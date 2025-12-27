@@ -19,6 +19,7 @@ export const PollDetail = () => {
   const [loading, setLoading] = useState(true);
   const [voting, setVoting] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
 
   const fetchPollData = async () => {
     if (!id) return;
@@ -84,6 +85,16 @@ export const PollDetail = () => {
     navigate('/login');
   };
 
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy link', err);
+    }
+  };
+
   if (loading) return <Container className="my-5 text-center">Loading...</Container>;
   if (!poll) return <Container className="my-5 text-center">Poll not found</Container>;
 
@@ -98,13 +109,22 @@ export const PollDetail = () => {
 
   return (
     <Container className="my-5">
-      <Link to="/" className="btn btn-outline-secondary mb-4">&larr; Back to Polls</Link>
+      <div className="d-flex justify-content-start align-items-center mb-4 gap-2">
+        <Link to="/" className="btn btn-outline-secondary">&larr; Back to Polls</Link>
+        <Button
+          variant="secondary"
+          onClick={handleCopyLink}
+          active={linkCopied}
+        >
+          {linkCopied ? 'Copied!' : 'Copy Link'}
+        </Button>
+      </div>
 
       <Row className="justify-content-center">
-        <Col lg={8}>
+        <Col>
           <Card className="shadow-sm">
             <Card.Body>
-              <Card.Title className="display-6 text-center mb-4">{poll.title}</Card.Title>
+              <Card.Title className="display-6 text-center mb-2">{poll.title}</Card.Title>
               <Card.Text className="text-center text-muted mb-4">{poll.description}</Card.Text>
 
               <Row className="align-items-center">
@@ -190,9 +210,4 @@ export const PollDetail = () => {
     </Container>
   );
 };
-
-
-
-
-
 

@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react';
 import { Container, Row, Col, Form, Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { getPolls } from '../api/client';
+import { CreatePollModal } from '../components/CreatePollModal';
 import type { Poll } from '../types';
 
 export const Home = () => {
   const [polls, setPolls] = useState<Poll[]>([]);
   const [search, setSearch] = useState('');
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   const fetchPolls = async (q?: string) => {
     try {
@@ -28,7 +30,7 @@ export const Home = () => {
 
   return (
     <Container className="my-5">
-      <Row className="justify-content-center mb-4">
+      <Row className="justify-content-start d-flex mb-4">
         <Col md={8}>
           <Form onSubmit={handleSearch} className="d-flex gap-2">
             <Form.Control
@@ -37,8 +39,11 @@ export const Home = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
-            <Button variant="primary" type="submit">
+            <Button variant="secondary" type="submit">
               Search
+            </Button>
+            <Button variant="primary" type="button" onClick={() => setShowCreateModal(true)}>
+              New
             </Button>
           </Form>
         </Col>
@@ -56,6 +61,13 @@ export const Home = () => {
           </Col>
         ))}
       </Row>
+
+      <CreatePollModal
+        show={showCreateModal}
+        onHide={() => setShowCreateModal(false)}
+        onPollCreated={() => fetchPolls(search)}
+      />
     </Container>
   );
 };
+

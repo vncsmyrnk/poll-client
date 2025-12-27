@@ -1,5 +1,5 @@
 import { apiClient } from './axios';
-import type { Poll, VotePayload, User, PollCounts, UserVote } from '../types';
+import type { Poll, VotePayload, User, PollCounts, UserVote, CreatePollPayload } from '../types';
 
 export const getMe = async (): Promise<User> => {
   const response = await apiClient.get<User>('/api/me');
@@ -8,6 +8,11 @@ export const getMe = async (): Promise<User> => {
 
 export const logout = async (): Promise<void> => {
   await apiClient.post('/auth/logout');
+};
+
+export const createPoll = async (payload: CreatePollPayload): Promise<Poll> => {
+  const response = await apiClient.post<Poll>('/api/polls', payload);
+  return response.data;
 };
 
 export const getPolls = async (query?: string): Promise<Poll[]> => {
@@ -34,3 +39,4 @@ export const getMyVote = async (id: string): Promise<UserVote> => {
 export const votePoll = async (id: string, payload: VotePayload): Promise<void> => {
   await apiClient.post(`/api/polls/${id}/votes`, { option_id: payload.optionId });
 };
+

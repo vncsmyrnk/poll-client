@@ -30,6 +30,12 @@ export interface UserVote {
   option_id: string;
 }
 
+export interface CreatePollPayload {
+  title: string;
+  description: string;
+  options: string[];
+}
+
 export interface User {
   id: string;
   name: string;

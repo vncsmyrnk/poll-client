@@ -42,8 +42,8 @@ export const AppBar = () => {
       {user && <span className="d-none d-lg-inline">{user.name}</span>}
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
+        width="32"
+        height="32"
         fill="currentColor"
         className="bi bi-person-circle"
         viewBox="0 0 16 16"
@@ -81,3 +81,4 @@ export const AppBar = () => {
     </Navbar>
   );
 };
+
